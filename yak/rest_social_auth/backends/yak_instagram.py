@@ -35,4 +35,5 @@ class Instagram(ExtraActionsAbstractMixin, ExtraDataAbstractMixin, InstagramOAut
         if 'limit' in kwargs:
             params.update({'count': kwargs['limit']})
         recent_media, next_ = api.user_recent_media(**params)
-        return recent_media
+        recent_likes, next_ = api.user_liked_media(**params)
+        return recent_media + recent_likes
