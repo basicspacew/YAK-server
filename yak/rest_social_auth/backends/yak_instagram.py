@@ -41,7 +41,7 @@ class Instagram(ExtraActionsAbstractMixin, ExtraDataAbstractMixin, InstagramOAut
         # changed if we decide we like this functionality (showing IG likes
         #   in the feed).
         recent_media, next_ = api.user_recent_media(**params)
-        recent_likes = self.get_likes(user_social_auth, **kwargs)
+        recent_likes = cls.get_likes(user_social_auth, **kwargs)
         return recent_media + recent_likes
 
     @staticmethod
