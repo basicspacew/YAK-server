@@ -37,9 +37,21 @@ class Instagram(ExtraActionsAbstractMixin, ExtraDataAbstractMixin, InstagramOAut
 
         #TODO: Move the call to get the user's liked posts to a new function,
         # and call that function separately from the consumer.
-        # This was coded for expediency and low-cost.  It needs to be
+        # This was coded for expediancy and low-cost.  It needs to be
         # changed if we decide we like this functionality (showing IG likes
         #   in the feed).
         recent_media, next_ = api.user_recent_media(**params)
-        recent_likes, next_ = api.user_liked_media(**params)
+        recent_likes = self.get_likes(user_social_auth, **kwargs)
         return recent_media + recent_likes
+
+    @staticmethod
+    def get_likes(user_social_auth, **kwargs):
+        api = InstagramAPI(access_token=user_social_auth.extra_data['access_token'])
+        params = {
+            'user_id': user_social_auth.uid,
+        }
+        if 'limit' in kwargs:
+            params.update({'count': kwargs['limit']})
+
+        recent_likes, next_ = api.user_liked_media(**params)
+        return recent_likes
