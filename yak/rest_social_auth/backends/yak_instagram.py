@@ -35,14 +35,8 @@ class Instagram(ExtraActionsAbstractMixin, ExtraDataAbstractMixin, InstagramOAut
         if 'limit' in kwargs:
             params.update({'count': kwargs['limit']})
 
-        #TODO: Move the call to get the user's liked posts to a new function,
-        # and call that function separately from the consumer.
-        # This was coded for expediancy and low-cost.  It needs to be
-        # changed if we decide we like this functionality (showing IG likes
-        #   in the feed).
         recent_media, next_ = api.user_recent_media(**params)
-        recent_likes = Instagram.get_likes(user_social_auth, **kwargs)
-        return recent_media + recent_likes
+        return recent_media
 
     @staticmethod
     def get_likes(user_social_auth, **kwargs):
