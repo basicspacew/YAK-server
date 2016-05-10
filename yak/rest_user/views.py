@@ -2,7 +2,7 @@ import base64
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_decode
-from rest_framework import viewsets, generics, status, views
+from rest_framework import viewsets, generics, status, views, exceptions
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.decorators import list_route
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -25,7 +25,6 @@ class SignUp(generics.CreateAPIView):
     serializer_class = SignUpSerializer
     permission_classes = (IsAuthenticatedOrCreate,)
 
-
 class Login(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = LoginSerializer
@@ -35,6 +34,27 @@ class Login(generics.ListAPIView):
         queryset = super(Login, self).get_queryset()
         return queryset.filter(pk=self.request.user.pk)
 
+#    override basic auth to better identify inactive users
+    def authenticate_credentials(self, userid, password):
+        """
+        Authenticate the userid and password against username and password.
+        """
+        credentials = {
+            get_user_model().USERNAME_FIELD: userid,
+            'password': password
+        }
+        user = authenticate(**credentials)
+
+        if user is None:
+            raise exceptions.AuthenticationFailed(_('Invalid username/password.'))
+
+        if user.is_active is False:
+            raise exceptions.PermissionDenied(_('User inactive.'))
+
+        if not user.is_active:
+            raise exceptions.AuthenticationFailed(_('User deleted.'))
+
+        return (user, None)
 
 class SignIn(views.APIView):
     """
