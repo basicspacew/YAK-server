@@ -21,7 +21,6 @@ setup(
         'facebook-sdk==0.4.0',
         'factory-boy>=2.4',
         'mock>=1.0',
-        'python-instagram>=1.3.0',
         'python-memcached>=1.53',
         'python-social-auth>=0.2',
         'python-swiftclient>=2.2',
@@ -30,7 +29,8 @@ setup(
         'twython>=3.1'
     ],
     dependency_links=[
-        "git+ssh://git@github.com/jbalogh/django-cache-machine.git#egg=django_cache_machine-master"
+        "git+ssh://git@github.com/jbalogh/django-cache-machine.git#egg=django_cache_machine-master",
+        "git+ssh://git@github.com/basicspacew/python-instagram.git@master#egg=python_instagram-master"
     ],
     include_package_data=True,
     license='BSD License',
