@@ -8,7 +8,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from social.apps.django_app import load_strategy
 from social.apps.django_app.default.models import UserSocialAuth
-from social.apps.django_app.utils import load_backend
 from social.backends.oauth import BaseOAuth1, BaseOAuth2
 from social.backends.utils import get_backend
 from social.exceptions import AuthAlreadyAssociated
@@ -17,6 +16,11 @@ from yak.rest_social_auth.utils import post_social_media
 from yak.rest_user.serializers import UserSerializer
 from yak.rest_user.views import SignUp
 
+#Django 1.7 -> 1.9 upgrade compatibility
+try:
+    from social.apps.django_app import load_backend
+except ImportError:
+    from social.apps.django_app.utils import load_backend
 
 User = get_user_model()
 
