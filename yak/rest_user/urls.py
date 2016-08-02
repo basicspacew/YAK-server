@@ -7,7 +7,7 @@ router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet, base_name='users')
 
 
-urlpatterns = ['',
+urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^sign_up/$', views.SignUp.as_view(), name="sign_up"),
     url(r'^login/$', views.Login.as_view(), name="login"),

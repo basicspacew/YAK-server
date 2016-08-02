@@ -15,7 +15,7 @@ router = routers.DefaultRouter()
 # These views do not expect app-specific notifications
 router.register(r'tags', views.TagViewSet, base_name='tags')
 
-urlpatterns = ['',
+urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^flag/$', views.FlagView.as_view(), name="flag"),
 ]
